@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\EmailList;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 
 class EmailListController extends Controller
 {
