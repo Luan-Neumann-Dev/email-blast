@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/email-list/{emailList}/subscribers', [SubscriberController::class, 'index'])->name('subscriber.index');
     Route::get('/email-list/{emailList}/subscribers/create', [SubscriberController::class, 'create'])->name('subscriber.create');
+    Route::delete('/email-list/{emailList}/subscribers/{subscriber}', [SubscriberController::class, 'destroy'])->name('subscriber.destroy');
 });
 
 require __DIR__.'/auth.php';
