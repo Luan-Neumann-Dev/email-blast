@@ -23,7 +23,7 @@
                             <x-table.td>{{ $list->title }}</x-table.td>
                             <x-table.td>{{ $list->subscribers_count }}</x-table.td>
                             <x-table.td>
-                                <x-button.link :href="route('subscriber.index', $list)">
+                                <x-button.link :href="route('subscribers.index', $list)">
                                     Subscribers
                                 </x-button.link>
                             </x-table.td>

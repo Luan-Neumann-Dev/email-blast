@@ -5,11 +5,11 @@
 
     <x-card class="space-y-4">
         <div class="flex justify-between">
-            <x-button.link :href="route('subscriber.create', $emailList)">
+            <x-button.link :href="route('subscribers.create', $emailList)">
                 {{ __('Add a new subscriber') }}
             </x-button.link>
 
-            <x-form :action="route('subscriber.index', $emailList)" class="w-3/5 flex space-x-4 items-center" x-data x-ref="form" flat>
+            <x-form :action="route('subscribers.index', $emailList)" class="w-3/5 flex space-x-4 items-center" x-data x-ref="form" flat>
                 <x-input.checkbox name="showTrash" submit value="1" @click="$refs.form.submit()" :checked="$showTrash"
                                   :label="__('Show Deleted Records')" />
                 <x-input.text name="search" :placeholder="__('Search')" :value="$search" class="w-full" />
@@ -26,7 +26,7 @@
                         <x-table.td>
                             @unless($subscriber->trashed())
                             <x-form
-                                :action="route('subscriber.destroy',[$emailList, $subscriber])" delete flat
+                                :action="route('subscribers.destroy',[$emailList, $subscriber])" delete flat
                                 onsubmit="return confirm('{{ __('Are you sure?') }}')">
                                 <x-button.secondary type="submit">
                                     {{ __('Delete') }}

@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-card>
-        <x-form :action="route('email-list.store')" post enctype="multipart/form-data">
+        <x-form :action="route('email-list.create')" post enctype="multipart/form-data">
 
             <div>
                 <x-input-label for="title" :value="__('Title')"/>
@@ -19,7 +19,7 @@
             </div>
 
             <div class="flex items-center space-x-4">
-                <x-button.secondary>
+                <x-button.secondary type="reset">
                     {{ __('Cancel') }}
                 </x-button.secondary>
                 <x-button type="submit">
