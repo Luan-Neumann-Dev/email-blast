@@ -8,7 +8,7 @@
         <thead class="border-b border-slate-300 bg-slate-50 text-sm text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white">
         <tr>
             @foreach($headers as $header)
-                <th scope="col" class="p-4">{{ $header }}</th>
+                <th scope="col" class="p-4 whitespace-nowrap">{{ $header }}</th>
             @endforeach
         </tr>
         </thead>
