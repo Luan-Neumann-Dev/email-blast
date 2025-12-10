@@ -24,7 +24,7 @@ class SubscriberController extends Controller
                 ->orWhere('email', 'like', "%$search%")
                 ->orWhere('id', '=', "$search"))
             ->paginate(10)
-            ->appends(compact('search'));
+            ->appends(compact('search', 'showTrash'));
 
         return view('subscriber.index', [
             'emailList' => $emailList,
