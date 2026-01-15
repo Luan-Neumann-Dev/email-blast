@@ -25,7 +25,30 @@ class CampaignController extends Controller
     }
 
     public function create(?string $tab = null) {
-        return view('campaigns.create', compact('tab'));
+        return view('campaigns.create', [
+            'tab' => $tab,
+            'form' => match ($tab) {
+                'template' => '_template',
+                'schedule' => '_schedule',
+                default => '_config'
+            }
+        ]);
+    }
+
+    public function store(?string $tab = null) {
+        //Vem da primeira tab
+        if (blank($tab)) {
+            $data = request()->validate([
+                'name' => ['required', 'max:255'],
+                'subject' => ['required', 'max:40'],
+                'email_list_id' => ['nullable'],
+                'template_id' => ['nullable'],
+            ]);
+
+            session()->put('campaigns::create', $data);
+
+            return to_route('campaigns.index', ['tab' => 'template']);
+        }
     }
 
     public function destroy(Campaign $campaign) {
