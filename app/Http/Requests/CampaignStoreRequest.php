@@ -13,19 +13,20 @@ class CampaignStoreRequest extends FormRequest
         $rules = [];
 
         $map = array_merge([
-            'name' =>  null,
-            'subject' =>  null,
+            'name' => null,
+            'subject' => null,
             'email_list_id' => null,
             'template_id' => null,
             'body' => null,
             'track_click' => null,
             'track_open' => null,
-            'send_at' => null
-        ], request()->all());
+            'send_at' => null,
+            'send_when' => null,
+        ], $this->all());
 
         //Vem da primeira tab
         if (blank($tab)) {
-            $rules =  [
+            $rules = [
                 'name' => ['required', 'max:255'],
                 'subject' => ['required', 'max:40'],
                 'email_list_id' => ['required', 'exists:email_lists,id'],
@@ -38,7 +39,13 @@ class CampaignStoreRequest extends FormRequest
         }
 
         if ($tab == 'schedule') {
-            $rules = ['send_at' => ['required', 'date']];
+            if ($map['send_when'] == 'now') {
+                $map['send_at'] = now()->format('Y-m-d');
+            } else if ($map['send_when'] == 'later') {
+                $rules = ['send_at' => ['required', 'date', 'after:today']];
+            } else {
+                $rules = ['send_when' => ['required']];
+            }
         }
 
         $session = session('campaigns::create', $map);
@@ -81,10 +88,12 @@ class CampaignStoreRequest extends FormRequest
         return route('campaigns.index');
     }
 
-    public function getData() {
+    public function getData()
+    {
         $session = session('campaigns::create');
 
         unset($session['_token']);
+        unset($session['send_when']);
 
         $session['track_click'] = $session['track_click'] ?: false;
         $session['track_open'] = $session['track_open'] ?: false;
