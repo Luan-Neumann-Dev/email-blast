@@ -44,16 +44,17 @@ class CampaignController extends Controller
 
         $query = $campaign
             ->mails()
-            ->selectRaw("
-                sum(openings) as total_openings
-                , count(subscriber_id) as total_subscribers
-                , count(case when openings > 0 then subscriber_id end) as unique_opens
-                , round((cast(count(case when openings > 0 then subscriber_id end) as float) / cast(count(subscriber_id) as float)) * 100) as openings_rate
-                , sum(clicks) as total_clicks
-                , count (case when clicks > 0 then subscriber_id end) as unique_clicks
-                , round((cast(count(case when clicks > 0 then subscriber_id end) as float) / cast(count(subscriber_id) as float)) * 100) as clicks_rate
-            ")
-            ->first();
+            ->with('subscriber')
+            ->when($search, fn(Builder $query) => $query
+                ->whereHas('subscriber', fn(Builder $query) => $query
+                    ->where('name', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%")
+                )
+            )
+            ->orderByDesc('openings')
+            ->simplePaginate(5)
+            ->appends(compact('search'));
+
 
         return view('campaigns.show', compact('campaign', 'what', 'search', 'query'));
     }
@@ -100,7 +101,7 @@ class CampaignController extends Controller
         if ($tab == 'schedule') {
             $campaign = Campaign::create($data);
 
-           SendEmailsCampaignJob::dispatchAfterResponse($campaign);
+            SendEmailsCampaignJob::dispatchAfterResponse($campaign);
         }
 
         return response()->redirectTo($toRoute);
