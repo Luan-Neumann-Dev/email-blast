@@ -21,9 +21,9 @@ class CampaignMailFactory extends Factory
         return [
             'campaign_id' => Campaign::factory(),
             'subscriber_id' => Subscriber::factory(),
-            'sent_at' => dake()->datetime(),
-            'openings' => fake()->numberBetween(1, 10),
-            'clicks' => fake()->numberBetween(1, 10),
+            'sent_at' => fake()->datetime(),
+            'openings' => fake()->numberBetween(0, 10),
+            'clicks' => fake()->numberBetween(0, 10),
         ];
     }
 }
