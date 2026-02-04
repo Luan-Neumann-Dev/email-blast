@@ -11,15 +11,19 @@ class CampaignShowRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $campaign = $this->route('campaign');
-        $what = $this->route('what');
-
-        if (is_null($what)) {
-            return to_route('campaigns.show', ['campaign' => $campaign, 'what' => 'statistics']);
-        }
+        $what = $this->route('what') ?: 'statistics';
 
         abort_unless(in_array($what, ['statistics', 'open', 'clicked']), 404);
 
         return true;
+    }
+
+    public function checkWhat()
+    {
+        if (is_null($this->route('what'))) {
+            return to_route('campaigns.show', ['campaign' => $this->route('campaign'), 'what' => 'statistics']);
+        }
+
+        return;
     }
 }

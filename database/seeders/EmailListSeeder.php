@@ -10,7 +10,7 @@ class EmailListSeeder extends Seeder
 {
     public function run(): void
     {
-        EmailList::factory()->count(50)->create()
+        EmailList::factory()->count(10)->create()
             ->each(function (EmailList $list) {
                 Subscriber::factory()
                     ->count(rand(50, 200))
