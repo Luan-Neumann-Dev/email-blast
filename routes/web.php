@@ -3,13 +3,28 @@
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\TemplateController;
+use App\Http\Controllers\TrackingController;
 use App\Http\Middleware\CampaignCreateSessionControl;
+use App\Jobs\SendEmailsCampaignJob;
 use App\Mail\EmailCampaign;
-use App\Models\Campaign;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\EmailListController;
 use App\Http\Controllers\ProfileController;
+
+Route::get('/email', function() {
+    $campaign = Campaign::find(2);
+
+    $mail = $campaign->mails()->first();
+
+    $email = new EmailCampaign($campaign, $mail);
+
+    SendEmailsCampaignJob::dispatchAfterResponse($campaign);
+
+    return $email->render();
+});
+
+Route::get('/t/{email}/o', [TrackingController::class, 'openings'])->name('tracking.openings');
 
 Route::get('/', function () {
     Auth::loginUsingId(1);
@@ -48,7 +63,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/campaigns/create/{tab?}', [CampaignController::class, 'store']);
 
     Route::get('/campaigns/{campaign}/{what?}', [CampaignController::class, 'show'])->name('campaigns.show')->withTrashed();
-
 
     Route::patch('campaigns/{campaign}/restore', [CampaignController::class, 'restore'])->withTrashed()->name('campaigns.restore');
     Route::delete('/campaigns/{campaign}', [CampaignController::class, 'destroy'])->name('campaigns.destroy');
