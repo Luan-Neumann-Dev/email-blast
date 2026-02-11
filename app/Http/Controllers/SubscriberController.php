@@ -19,10 +19,11 @@ class SubscriberController extends Controller
             ->subscribers()
             ->with('emailList')
             ->when($withTrashed, fn(Builder $query) => $query->withTrashed())
-            ->when($search, fn(Builder $query) => $query
-                ->where('name', 'like', "%$search%")
-                ->orWhere('email', 'like', "%$search%")
-                ->orWhere('id', '=', "$search"))
+            ->when($search, fn(Builder $query) =>
+                $query->where(fn($q) => $q
+                    ->whereLike('name', "%$search%")
+                    ->orWhereLike('email', "%$search%")
+                ))
             ->paginate(10)
             ->appends(compact('search', 'withTrashed'));
 

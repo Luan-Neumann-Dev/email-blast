@@ -53,12 +53,12 @@ class CampaignStoreRequest extends FormRequest
         foreach ($session as $key => $value) {
             $newValue = data_get($map, $key);
 
-            if (filled($newValue) || ($key == 'track_click' || $key == 'track_open')) {
+            if (filled($newValue)) {
                 $session[$key] = $newValue;
             }
         }
 
-        if ($templateId = $session['template_id'] && blank($session['body'])) {
+        if ($templateId = ($session['template_id'] && blank($session['body']))) {
             $template = Template::find($templateId);
             $session['body'] = $template->body;
         }
