@@ -7,6 +7,8 @@ use App\Http\Controllers\TrackingController;
 use App\Http\Middleware\CampaignCreateSessionControl;
 use App\Jobs\SendEmailsCampaignJob;
 use App\Mail\EmailCampaign;
+use App\Models\Campaign;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\EmailListController;
@@ -16,16 +18,6 @@ Route::get('/email', function() {
     $campaign = Campaign::find(2);
 
     $mail = $campaign->mails()->first();
-
-    $pattern = '/href="([^"]*)"/';
-
-    preg_match_all($pattern, $campaign->body, $matches);
-
-    foreach ($matches[1] as $index => $oldValue) {
-        $newValue = 'href="' . route('tracking.clicks', ['mail' => $mail, 'f' => $oldValue]) . '"';
-
-        $campaign->body = str_replace($matches[0][$index], $newValue, $campaign->body);
-    }
 
     $email = new EmailCampaign($campaign, $mail);
 
