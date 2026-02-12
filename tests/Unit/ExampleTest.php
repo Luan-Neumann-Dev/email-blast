@@ -1,5 +1,11 @@
 <?php
 
-test('that true is true', function () {
-    expect(true)->toBeTrue();
-});
+use Tests\TestCase;
+
+class ExampleTest extends TestCase {
+
+    public function test_example() {
+        $this->assertDatabaseCount('users', 2);
+    }
+
+}
