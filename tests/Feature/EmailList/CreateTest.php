@@ -8,11 +8,14 @@ use Tests\TestCase;
 
 class CreateTest extends TestCase
 {
+    public function setUp(): void {
+        parent::setUp();
+
+        $this->login();
+    }
+
     public function test_it_should_be_able_create_an_email_list() {
         $this->withoutExceptionHandling();
-
-        $user = User::factory()->create();
-        $this->actingAs($user);
 
         $data = [
             'title' => 'Email List Test',
@@ -41,26 +44,17 @@ class CreateTest extends TestCase
     }
 
     public function test_title_should_be_required() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
-        $request = $this->post(route('email-list.create'), [])
+        $this->post(route('email-list.create'), [])
             ->assertSessionHasErrors('title');
     }
 
     public function test_file_should_be_required() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
-        $request = $this->post(route('email-list.create'), [])
+        $this->post(route('email-list.create'), [])
             ->assertSessionHasErrors('file');
     }
 
     public function test_title_should_have_a_max_of_255_characters() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
-        $request = $this->post(route('email-list.create'), ['title' => str_repeat('*', 256)])
+        $this->post(route('email-list.create'), ['title' => str_repeat('*', 256)])
             ->assertSessionHasErrors('title');
     }
 }
