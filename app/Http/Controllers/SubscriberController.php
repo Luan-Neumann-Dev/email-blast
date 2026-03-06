@@ -23,6 +23,7 @@ class SubscriberController extends Controller
                 $query->where(fn($q) => $q
                     ->whereLike('name', "%$search%")
                     ->orWhereLike('email', "%$search%")
+                    ->orWhereLike('id', $search)
                 ))
             ->paginate(10)
             ->appends(compact('search', 'withTrashed'));
