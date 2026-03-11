@@ -25,10 +25,10 @@ class CampaignController extends Controller
         $campaigns = Campaign::query()
             ->when($showTrash, fn(Builder $query) => $query->withTrashed())
             ->when($search, fn(Builder $query) => $query
-                ->where('name', 'like', "%$search%")
+                ->whereLike('name', "%$search%")
                 ->orWhere('id', '=', $search)
             )
-            ->paginate(5)
+            ->paginate(7)
             ->appends(compact('search', 'showTrash'));
 
         return view('campaigns.index', compact('search', 'showTrash', 'campaigns'));
