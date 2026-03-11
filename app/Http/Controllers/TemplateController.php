@@ -72,6 +72,6 @@ class TemplateController extends Controller
         $template->delete();
 
         return to_route('templates.index')
-            ->with('success', __('Template successfully created!'));
+            ->with('success', __('Template successfully deleted!'));
     }
 }
