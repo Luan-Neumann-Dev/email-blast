@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Template;
+use App\Models\Campaign;
 use Illuminate\Pagination\LengthAwarePaginator;
 use function Pest\Laravel\get;
 use function Pest\Laravel\getJson;
@@ -9,19 +9,19 @@ beforeEach(function () {
     login();
 });
 
-it('only logged users can access templates', function () {
+it('only logged users can access campaigns', function () {
     Auth::logout();
 
-    getJson(route('templates.index'))
+    getJson(route('campaigns.index'))
         ->assertUnauthorized();
 });
 
-it('should be possible see the entire list of templates', function () {
+it('should be possible see the entire list of campaigns', function () {
 
-    Template::factory()->count(5)->create();
+    Campaign::factory()->count(5)->create();
 
-    get(route('templates.index'))
-        ->assertViewHas('templates', function ($value) {
+    get(route('campaigns.index'))
+        ->assertViewHas('campaigns', function ($value) {
             expect($value)->count(5);
 
             return true;
@@ -30,11 +30,11 @@ it('should be possible see the entire list of templates', function () {
 });
 
 it('should be able to search a template by name', function () {
-    Template::factory()->count(5)->create();
-    Template::factory()->create(['name' => 'Charlie Smith']);
+    Campaign::factory()->count(5)->create();
+    Campaign::factory()->create(['name' => 'Charlie Smith']);
 
-    get(route('templates.index', ['search' => 'Charlie']))
-        ->assertViewHas('templates', function ($value) {
+    get(route('campaigns.index', ['search' => 'Charlie']))
+        ->assertViewHas('campaigns', function ($value) {
             expect($value)
                 ->count(1)
                 ->and($value)
@@ -47,11 +47,11 @@ it('should be able to search a template by name', function () {
 });
 
 it('should be able to search by id', function () {
-    Template::factory()->create(['name' => 'Joe Doe']);
-    Template::factory()->create(['name' => 'Jane Doe']);
+    Campaign::factory()->create(['name' => 'Joe Doe']);
+    Campaign::factory()->create(['name' => 'Jane Doe']);
 
-    get(route('templates.index', ['search' => 2]))
-        ->assertViewHas('templates', function ($value) {
+    get(route('campaigns.index', ['search' => 2]))
+        ->assertViewHas('campaigns', function ($value) {
             expect($value)
                 ->count(1)
                 ->and($value)
@@ -64,18 +64,18 @@ it('should be able to search by id', function () {
 });
 
 it('should be able to show deleted records', function () {
-    Template::factory()->create(['deleted_at' => now()]);
-    Template::factory()->create();
+    Campaign::factory()->create(['deleted_at' => now()]);
+    Campaign::factory()->create();
 
-    get(route('templates.index'))
-        ->assertViewHas('templates', function ($value) {
+    get(route('campaigns.index'))
+        ->assertViewHas('campaigns', function ($value) {
             expect($value)->count(1);
 
             return true;
         });
 
-    get(route('templates.index', ['shotTrash' => true]))
-        ->assertViewHas('templates', function ($value) {
+    get(route('campaigns.index', ['shotTrash' => true]))
+        ->assertViewHas('campaigns', function ($value) {
             expect($value)
                 ->count(2);
 
@@ -84,10 +84,10 @@ it('should be able to show deleted records', function () {
 });
 
 it('should be paginated', function () {
-    Template::factory()->count(30)->create();
+    Campaign::factory()->count(30)->create();
 
-    get(route('templates.index'))
-        ->assertViewHas('templates', function ($value) {
+    get(route('campaigns.index'))
+        ->assertViewHas('campaigns', function ($value) {
             expect($value)
                 ->count(7)
                 ->and($value)->toBeInstanceOf(LengthAwarePaginator::class);
