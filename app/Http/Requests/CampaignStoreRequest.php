@@ -21,7 +21,7 @@ class CampaignStoreRequest extends FormRequest
             'track_click' => null,
             'track_open' => null,
             'send_at' => null,
-            'send_when' => null,
+            'send_when' => 'now',
         ], $this->all());
 
         //Vem da primeira tab
@@ -48,7 +48,7 @@ class CampaignStoreRequest extends FormRequest
             }
         }
 
-        $session = session('campaigns::create', $map);
+        $session = session('campaign', $map);
 
         foreach ($session as $key => $value) {
             $newValue = data_get($map, $key);
@@ -58,12 +58,12 @@ class CampaignStoreRequest extends FormRequest
             }
         }
 
-        if ($templateId = ($session['template_id'] && blank($session['body']))) {
-            $template = Template::find($templateId);
-            $session['body'] = $template->body;
+        if (($templateId = ($session['template_id']) && blank($session['body']))) {
+            $template = Template::query()->find($templateId);
+            $session['body'] = $template?->body;
         }
 
-        session()->put('campaigns::create', $session);
+        session()->put('campaign', $session);
 
         return $rules;
     }
@@ -90,7 +90,7 @@ class CampaignStoreRequest extends FormRequest
 
     public function getData()
     {
-        $session = session('campaigns::create');
+        $session = session('campaign');
 
         unset($session['_token']);
         unset($session['send_when']);
