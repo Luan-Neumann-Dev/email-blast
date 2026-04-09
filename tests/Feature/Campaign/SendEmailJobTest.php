@@ -67,7 +67,7 @@ test('when a campaign is set to send later the email should be schedule to be se
 
     Template::factory()->create();
     $emailList = EmailList::factory()->has(Subscriber::factory()->count(3))->create();
-    $campaign = Campaign::factory()->for($emailList)->create(['send_at' => now()->format('Y-m-d')]);
+    $campaign = Campaign::factory()->for($emailList)->create(['send_at' => now()->addDays(2)->format('Y-m-d')]);
     $subscriber = $emailList->subscribers->first();
 
     SendEmailCampaignJob::dispatch($campaign, $subscriber);
