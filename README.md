@@ -9,6 +9,11 @@
 
 
 <img width="1900" height="823" alt="localhost_8000_" src="https://github.com/user-attachments/assets/72ed6682-470b-4776-b07f-97bd830cba3a" />
+<img width="1900" height="918" alt="127 0 0 1_8000_campaigns_5_statistics" src="https://github.com/user-attachments/assets/ed74a422-bf84-46f4-9ff9-37964f47fa3f" />
+<img width="1900" height="648" alt="127 0 0 1_8000_templates_2" src="https://github.com/user-attachments/assets/6631385e-703b-462d-92b2-880c886a080b" />
+<img width="1900" height="730" alt="127 0 0 1_8000_campaigns_create" src="https://github.com/user-attachments/assets/d6e8708d-613c-4997-9817-e3cb8d290fe9" />
+<img width="1900" height="918" alt="127 0 0 1_8000_campaigns_create_schedule" src="https://github.com/user-attachments/assets/1c95793d-d54d-4088-9ffe-08a92cd0e039" />
+
 
 **[🐛 Report Bug](https://github.com/Luan-Neumann-Dev/email-blast/issues)**
 
